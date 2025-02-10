@@ -23,12 +23,10 @@ public class User extends BaseEntity {
     @Column(nullable = false)
     private String password;
 
-    @OneToMany
-    @JoinTable(name = "schedule")
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Schedule> schedules;
 
-    @OneToMany
-    @JoinTable(name = "comment")
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Comment> comments;
 
     public User() {
@@ -37,6 +35,10 @@ public class User extends BaseEntity {
     public User(String username, String email, String password) {
         this.username = username;
         this.email = email;
+        this.password = password;
+    }
+
+    public void updatePassword(String password) {
         this.password = password;
     }
 }
