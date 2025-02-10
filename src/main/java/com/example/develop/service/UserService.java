@@ -48,11 +48,9 @@ public class UserService {
         userRepository.delete(findUser);
     }
 
-    private boolean checkPassword(User user, String password) {
+    private void checkPassword(User user, String password) {
         if (!user.getPassword().equals(password)) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Wrong password");
         }
-
-        return true;
     }
 }
