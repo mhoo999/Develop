@@ -39,7 +39,7 @@ public class ScheduleService {
     }
 
     public void delete(Long id, String username) {
-        User findUser = userRepository.findUserByUsernameOrElseThrow(username);
+        userRepository.findUserByUsernameOrElseThrow(username);
 
         scheduleRepository.deleteById(id);
     }
