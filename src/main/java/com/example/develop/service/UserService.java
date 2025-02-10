@@ -1,10 +1,16 @@
 package com.example.develop.service;
 
 import com.example.develop.dto.response.SignUpResponseDto;
+import com.example.develop.dto.response.UserResponseDto;
 import com.example.develop.entity.User;
 import com.example.develop.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -19,5 +25,28 @@ public class UserService {
         User savedUser = userRepository.save(user);
 
         return new SignUpResponseDto(savedUser.getId(), savedUser.getUsername(), savedUser.getEmail());
+    }
+
+    public UserResponseDto findById(Long id) {
+
+        User findUser = userRepository.findByIdOrElseThrow(id);
+
+        return new UserResponseDto(findUser.getUsername(), findUser.getEmail());
+    }
+
+    @Transactional
+    public void updatePassword(Long id, String oldPassword, String newPassword) {
+
+        User findUser = userRepository.findByIdOrElseThrow(id);
+
+        if (!findUser.getPassword().equals(oldPassword)) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Wrong password");
+        }
+
+        findUser.updatePassword(newPassword);
+    }
+
+    public List<UserResponseDto> findAll() {
+        return userRepository.findAll().stream().map(UserResponseDto::toDto).toList();
     }
 }
