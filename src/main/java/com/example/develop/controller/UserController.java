@@ -1,5 +1,6 @@
 package com.example.develop.controller;
 
+import com.example.develop.dto.request.DeleteUserRequestDto;
 import com.example.develop.dto.request.SignUpRequestDto;
 import com.example.develop.dto.request.UpdatePasswordRequestDto;
 import com.example.develop.dto.response.SignUpResponseDto;
@@ -49,6 +50,11 @@ public class UserController {
         return new ResponseEntity<>(userResponseDtoList, HttpStatus.OK);
     }
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(@PathVariable Long id, @RequestBody DeleteUserRequestDto requestDto) {
+        userService.delete(id, requestDto.getPassword());
 
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 
 }
