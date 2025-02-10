@@ -37,4 +37,10 @@ public class ScheduleService {
         Schedule findSchedule = scheduleRepository.findByIdOrElseThrow(id);
         return new ScheduleResponseDto(findSchedule.getId(), findSchedule.getTitle(), findSchedule.getContents());
     }
+
+    public void delete(Long id, String username) {
+        userRepository.findUserByUsernameOrElseThrow(username);
+
+        scheduleRepository.deleteById(id);
+    }
 }
