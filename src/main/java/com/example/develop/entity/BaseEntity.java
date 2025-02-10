@@ -1,4 +1,4 @@
-﻿package com.example.develop.entity;
+package com.example.develop.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.EntityListeners;
@@ -22,5 +22,4 @@ public abstract class BaseEntity {
     @LastModifiedDate
     private LocalDateTime updatedAt;
 
-    
 }
