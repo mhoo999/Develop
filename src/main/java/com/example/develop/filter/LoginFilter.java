@@ -24,6 +24,7 @@ public class LoginFilter implements Filter {
 
             String sessionId = null;
 
+            // httpRequest에서 "JSESSIONID"를 찾아 검증합니다.
             if (httpRequest.getCookies() != null) {
                 for (Cookie cookie : httpRequest.getCookies()) {
                     log.info("check cookie - {} : {}", cookie.getName(), cookie.getValue());

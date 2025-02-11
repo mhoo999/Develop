@@ -7,6 +7,7 @@ import com.example.develop.service.ScheduleService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -22,7 +23,7 @@ public class ScheduleController {
     // 제목과 컨텐츠, 유저 이름을 전달받습니다.(유저이름은 로그인 기능이 없어 임시로 사용합니다.)
     // 아이디와 제목, 컨텐츠를 반환합니다.
     @PostMapping
-    public ResponseEntity<ScheduleResponseDto> save(@RequestBody CreateScheduleRequestDto requestDto) {
+    public ResponseEntity<ScheduleResponseDto> save(@Validated @RequestBody CreateScheduleRequestDto requestDto) {
 
         ScheduleResponseDto scheduleRequestDto = scheduleService.save(requestDto.getTitle(), requestDto.getContents(), requestDto.getUsername());
 
@@ -50,7 +51,7 @@ public class ScheduleController {
     // 아이디로 컨텐츠를 조회하고, 저장된 유저가 맞다면 삭제하는 메소드입니다.
     // 유저 이름을 전달받습니다.(유저 이름은 로그인 기능이 없어 임시로 사용합니다.)
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable Long id, @RequestBody DeleteScheduleRequestDto requestDto) {
+    public ResponseEntity<Void> delete(@Validated @PathVariable Long id, @RequestBody DeleteScheduleRequestDto requestDto) {
         scheduleService.delete(id, requestDto.getUsername());
 
         return new ResponseEntity<>(HttpStatus.OK);
