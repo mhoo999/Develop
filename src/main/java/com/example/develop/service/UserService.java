@@ -1,5 +1,6 @@
 package com.example.develop.service;
 
+import com.example.develop.dto.response.LoginResponseDto;
 import com.example.develop.dto.response.SignUpResponseDto;
 import com.example.develop.dto.response.UserResponseDto;
 import com.example.develop.entity.User;
@@ -62,5 +63,14 @@ public class UserService {
         if (!user.getPassword().equals(password)) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Wrong password");
         }
+    }
+
+    public LoginResponseDto login(String email, String password) {
+
+        User findUser = userRepository.findByEmailOrElseThrow(email);
+
+        checkPassword(findUser, password);
+
+        return new LoginResponseDto(findUser.getId(), findUser.getUsername());
     }
 }
