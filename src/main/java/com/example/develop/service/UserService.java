@@ -1,5 +1,6 @@
 package com.example.develop.service;
 
+import com.example.develop.config.PasswordEncoder;
 import com.example.develop.dto.response.LoginResponseDto;
 import com.example.develop.dto.response.SignUpResponseDto;
 import com.example.develop.dto.response.UserResponseDto;
@@ -18,10 +19,13 @@ import java.util.List;
 public class UserService {
 
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
     public SignUpResponseDto signUp(String username, String email, String password) {
 
-        User user = new User(username, email, password);
+        String encodedPassword = passwordEncoder.encode(password);
+
+        User user = new User(username, email, encodedPassword);
         User savedUser = userRepository.save(user);
 
         return new SignUpResponseDto(savedUser.getId(), savedUser.getUsername(), savedUser.getEmail());
@@ -41,7 +45,8 @@ public class UserService {
 
         checkPassword(findUser, oldPassword);
 
-        findUser.updatePassword(newPassword);
+        String encodedPassword = passwordEncoder.encode(newPassword);
+        findUser.updatePassword(encodedPassword);
     }
 
     public List<UserResponseDto> findAll() {
@@ -60,7 +65,8 @@ public class UserService {
 
     // 비밀번호 심사를 진행하는 메소드입니다.
     private void checkPassword(User user, String password) {
-        if (!user.getPassword().equals(password)) {
+
+        if (!passwordEncoder.matches(password, user.getPassword())) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Wrong password");
         }
     }
