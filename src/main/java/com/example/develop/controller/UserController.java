@@ -104,4 +104,15 @@ public class UserController {
         return ResponseEntity.ok().headers(headers).body(responseDto);
     }
 
+    @GetMapping("/me")
+    public ResponseEntity<String> getSessionInfo(HttpServletRequest request) {
+        HttpSession session = request.getSession();
+        if (session == null || session.getAttribute("userId") == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Session not found");
+        }
+
+        Long userId = (Long) session.getAttribute("userId");
+        return ResponseEntity.ok("User ID : " + userId);
+    }
+
 }
