@@ -6,6 +6,8 @@ import com.example.develop.dto.request.UpdateScheduleRequestDto;
 import com.example.develop.dto.response.ScheduleResponseDto;
 import com.example.develop.service.ScheduleService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -66,6 +68,14 @@ public class ScheduleController {
         ScheduleResponseDto scheduleResponseDto = scheduleService.update(id, requestDto.getTitle(), requestDto.getContents(), requestDto.getUserId());
 
         return new ResponseEntity<>(scheduleResponseDto, HttpStatus.OK);
+    }
+
+    // page 와 size 를 쿼리로 받아 페이징하는 메소드입니다.
+    @GetMapping("/pageable")
+    public ResponseEntity<Page<ScheduleResponseDto>> findSchedules(Pageable pageable) {
+        Page<ScheduleResponseDto> schedules = scheduleService.findSchedules(pageable);
+
+        return new ResponseEntity<>(schedules, HttpStatus.OK);
     }
 
 }
