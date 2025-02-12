@@ -7,6 +7,7 @@ import com.example.develop.entity.User;
 import com.example.develop.repository.CommentRepository;
 import com.example.develop.repository.ScheduleRepository;
 import com.example.develop.repository.UserRepository;
+import jakarta.validation.constraints.NotBlank;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -30,5 +31,28 @@ public class CommentService {
         Comment savedComment = commentRepository.save(comment);
 
         return new CommentResponseDto(savedComment.getContents());
+    }
+
+    public CommentResponseDto update(Long id, String contents, Long userId) {
+        userRepository.findByIdOrElseThrow(userId);
+        scheduleRepository.findByIdOrElseThrow(id);
+
+        Comment findComment = commentRepository.findByIdOrElseThrow(id);
+
+        if (contents != null) {
+            findComment.updateContents(contents);
+        }
+
+        return new CommentResponseDto(findComment.getContents());
+    }
+
+    public void delete(Long id, @NotBlank Long userId, @NotBlank Long scheduleId) {
+        User findUser = userRepository.findByIdOrElseThrow(userId);
+        findUser.getComments().removeIf(comment -> comment.getId().equals(id));
+
+        Schedule findSchedule = scheduleRepository.findByIdOrElseThrow(scheduleId);
+        findSchedule.getComments().removeIf(comment -> comment.getId().equals(id));
+
+        commentRepository.delete(commentRepository.findByIdOrElseThrow(id));
     }
 }
