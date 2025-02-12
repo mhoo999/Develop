@@ -61,7 +61,7 @@ public class CommentService {
 
     public List<CommentResponseDto> getAll(Long userId, Long scheduleId) {
         return commentRepository.findAll().stream()
-                .filter(comment -> (userId != null && comment.getUser().getId().equals(userId)) || (scheduleId != null && comment.getSchedule().getId().equals(scheduleId)))
+                .filter(comment -> (comment.getUser().getId().equals(userId)) || (comment.getSchedule().getId().equals(scheduleId)))
                 .map(CommentResponseDto::toDto)
                 .collect(Collectors.toList());
     }
