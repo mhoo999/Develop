@@ -44,7 +44,7 @@ public class ScheduleService {
         User findUser = userRepository.findByIdOrElseThrow(userId);
         findUser.getSchedules().removeIf(schedule -> schedule.getId().equals(id));
 
-        scheduleRepository.deleteById(id);
+        scheduleRepository.delete(scheduleRepository.findByIdOrElseThrow(id));
     }
 
     public ScheduleResponseDto update(Long id, String title, String contents, Long userId) {
