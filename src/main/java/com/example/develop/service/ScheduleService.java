@@ -7,6 +7,7 @@ import com.example.develop.repository.ScheduleRepository;
 import com.example.develop.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -65,6 +66,9 @@ public class ScheduleService {
     }
 
     public Page<ScheduleResponseDto> findSchedules(Pageable pageable) {
-        return scheduleRepository.findAll(pageable).map(ScheduleResponseDto::toDto);
+
+        Pageable defaultPageable = (pageable != null) ? pageable : PageRequest.of(0, 10);
+
+        return scheduleRepository.findAll(defaultPageable).map(ScheduleResponseDto::toDto);
     }
 }
