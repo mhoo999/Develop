@@ -58,6 +58,9 @@ public class ScheduleController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
+    // 스케줄을 수정하는 메소드입니다.
+    // 제목과 내용, 유저 이름을 전달받습니다.
+    // 제목과 내용은 NULL 을 허용합니다.
     @PatchMapping("/{id}")
     public ResponseEntity<ScheduleResponseDto> update(@Validated @PathVariable Long id, @RequestBody UpdateScheduleRequestDto requestDto) {
         ScheduleResponseDto scheduleResponseDto = scheduleService.update(id, requestDto.getTitle(), requestDto.getContents(), requestDto.getUserId());
