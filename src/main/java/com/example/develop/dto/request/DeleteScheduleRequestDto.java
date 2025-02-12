@@ -1,15 +1,15 @@
 package com.example.develop.dto.request;
 
-import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 
 @Getter
 public class DeleteScheduleRequestDto {
 
-    @NotBlank
-    private final String username;
+    @NotNull
+    private final Long userId;
 
-    public DeleteScheduleRequestDto(String username) {
-        this.username = username;
+    public DeleteScheduleRequestDto(Long userId) {
+        this.userId = userId;
     }
 }

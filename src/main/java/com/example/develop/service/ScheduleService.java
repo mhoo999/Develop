@@ -17,12 +17,14 @@ public class ScheduleService {
     private final UserRepository userRepository;
     private final ScheduleRepository scheduleRepository;
 
-    public ScheduleResponseDto save(String title, String contents, String username) {
+    public ScheduleResponseDto save(String title, String contents, Long userId) {
 
-        User findUser = userRepository.findUserByUsernameOrElseThrow(username);
+        User findUser = userRepository.findByIdOrElseThrow(userId);
 
         Schedule schedule = new Schedule(title, contents);
         schedule.setUser(findUser);
+
+        findUser.getSchedules().add(schedule);
 
         Schedule savedSchedule = scheduleRepository.save(schedule);
 
@@ -38,9 +40,25 @@ public class ScheduleService {
         return new ScheduleResponseDto(findSchedule.getId(), findSchedule.getTitle(), findSchedule.getContents());
     }
 
-    public void delete(Long id, String username) {
-        userRepository.findUserByUsernameOrElseThrow(username);
+    public void delete(Long id, Long userId) {
+        User findUser = userRepository.findByIdOrElseThrow(userId);
+        findUser.getSchedules().removeIf(schedule -> schedule.getId().equals(id));
 
         scheduleRepository.deleteById(id);
+    }
+
+    public ScheduleResponseDto update(Long id, String title, String contents, Long userId) {
+        userRepository.findByIdOrElseThrow(userId);
+        Schedule findSchedule = scheduleRepository.findByIdOrElseThrow(id);
+
+        if (title != null) {
+            findSchedule.updateTitle(title);
+        }
+
+        if (contents != null) {
+            findSchedule.updateContents(contents);
+        }
+
+        return new ScheduleResponseDto(findSchedule.getId(), findSchedule.getTitle(), findSchedule.getContents());
     }
 }

@@ -2,6 +2,7 @@ package com.example.develop.controller;
 
 import com.example.develop.dto.request.CreateScheduleRequestDto;
 import com.example.develop.dto.request.DeleteScheduleRequestDto;
+import com.example.develop.dto.request.UpdateScheduleRequestDto;
 import com.example.develop.dto.response.ScheduleResponseDto;
 import com.example.develop.service.ScheduleService;
 import lombok.RequiredArgsConstructor;
@@ -25,7 +26,7 @@ public class ScheduleController {
     @PostMapping
     public ResponseEntity<ScheduleResponseDto> save(@Validated @RequestBody CreateScheduleRequestDto requestDto) {
 
-        ScheduleResponseDto scheduleRequestDto = scheduleService.save(requestDto.getTitle(), requestDto.getContents(), requestDto.getUsername());
+        ScheduleResponseDto scheduleRequestDto = scheduleService.save(requestDto.getTitle(), requestDto.getContents(), requestDto.getUserId());
 
         return new ResponseEntity<>(scheduleRequestDto, HttpStatus.CREATED);
     }
@@ -52,9 +53,19 @@ public class ScheduleController {
     // 유저 이름을 전달받습니다.(유저 이름은 로그인 기능이 없어 임시로 사용합니다.)
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@Validated @PathVariable Long id, @RequestBody DeleteScheduleRequestDto requestDto) {
-        scheduleService.delete(id, requestDto.getUsername());
+        scheduleService.delete(id, requestDto.getUserId());
 
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    // 스케줄을 수정하는 메소드입니다.
+    // 제목과 내용, 유저 이름을 전달받습니다.
+    // 제목과 내용은 NULL 을 허용합니다.
+    @PatchMapping("/{id}")
+    public ResponseEntity<ScheduleResponseDto> update(@Validated @PathVariable Long id, @RequestBody UpdateScheduleRequestDto requestDto) {
+        ScheduleResponseDto scheduleResponseDto = scheduleService.update(id, requestDto.getTitle(), requestDto.getContents(), requestDto.getUserId());
+
+        return new ResponseEntity<>(scheduleResponseDto, HttpStatus.OK);
     }
 
 }
