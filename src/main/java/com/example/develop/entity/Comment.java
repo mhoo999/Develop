@@ -23,4 +23,9 @@ public class Comment extends BaseEntity {
     @JoinColumn(name = "schedule_id")
     private Schedule schedule;
 
+    public Comment(String contents, User user, Schedule schedule) {
+        this.contents = contents;
+        this.user = user;
+        this.schedule = schedule;
+    }
 }

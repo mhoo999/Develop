@@ -1,24 +1,21 @@
 package com.example.develop.dto.request;
 
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 
 @Getter
-public class CreateScheduleRequestDto {
+public class UpdateScheduleRequestDto {
 
-    @NotBlank
     private final String title;
 
-    @NotNull
-    private final String Contents;
+    private final String contents;
 
     @NotNull
     private final Long userId;
 
-    public CreateScheduleRequestDto(String title, String contents, Long userId) {
+    public UpdateScheduleRequestDto(String title, String contents, Long userId) {
         this.title = title;
-        this.Contents = contents;
+        this.contents = contents;
         this.userId = userId;
     }
 }
