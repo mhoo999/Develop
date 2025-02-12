@@ -48,7 +48,7 @@ public class ScheduleService {
     }
 
     public ScheduleResponseDto update(Long id, String title, String contents, Long userId) {
-        User findUser = userRepository.findByIdOrElseThrow(userId);
+        userRepository.findByIdOrElseThrow(userId);
         Schedule findSchedule = scheduleRepository.findByIdOrElseThrow(id);
 
         if (title != null) {
