@@ -11,6 +11,9 @@ import jakarta.validation.constraints.NotBlank;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 @RequiredArgsConstructor
 public class CommentService {
@@ -55,4 +58,12 @@ public class CommentService {
 
         commentRepository.delete(commentRepository.findByIdOrElseThrow(id));
     }
+
+    public List<CommentResponseDto> getAll(Long userId, Long scheduleId) {
+        return commentRepository.findAll().stream()
+                .filter(comment -> (userId != null && comment.getUser().getId().equals(userId)) || (scheduleId != null && comment.getSchedule().getId().equals(scheduleId)))
+                .map(CommentResponseDto::toDto)
+                .collect(Collectors.toList());
+    }
+
 }
